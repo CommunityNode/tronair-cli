@@ -1,0 +1,22 @@
+{
+  "name": "tronair-cli",
+  "version": "0.1.6",
+  "description": "Command line tool for doing airdrops on the TRON blockchain",
+  "main": "init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "colradi",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/colradi/tronair-cli.git"
+  },
+  "dependencies": {
+    "es6-promise-pool": "^2.5.0",
+    "minimist": "^1.2.0",
+    "prompts": "^2.0.3",
+    "request-promise": "^4.2.4",
+    "tronweb": "^2.1.32"
+  }
+}
