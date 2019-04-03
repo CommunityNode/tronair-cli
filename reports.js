@@ -72,8 +72,8 @@ async function confirmBefore(tw, airdrop){
 
 
 function explainResults(airdrop, results){
-	var success_filename = "SUCCESS_" + airdrop.amount + "_" + airdrop.token_abbr + "_" + time.today() + ".json";
-	var failed_filename = "FAILED_" + airdrop.amount + "_" + airdrop.token_abbr + "_" + time.today() + ".json";
+	var success_filename = "SUCCESS_" + "_" + time.today() + "_" + airdrop.token_abbr + "_" + airdrop.amount + ".json";
+	var failed_filename = "FAILED_" + "_" + time.today() + "_" + airdrop.token_abbr + "_" + airdrop.amount + ".json";
 	var num_success = results.success.length;
 	var num_failures = results.failures.length;
 	var message = "------------   AIRDROP FINISHED   ---------------- \r\n";
