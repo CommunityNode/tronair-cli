@@ -28,7 +28,7 @@ async function getHolders(airdrop) {
   let limit = 50;
 
   while (true) {
-    const { data: allHolders } = await axios.get("https://apilist.tronscan.org/api/tokenholders", {
+    const { data: { data: allHolders } } = await axios.get("https://apilist.tronscan.org/api/tokenholders", {
       params: {
         address: airdrop.token2_ownerAddress,
         limit,
