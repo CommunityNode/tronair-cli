@@ -47,17 +47,26 @@ async function getHolders(airdrop){
 		//TODO TODO TODO TODO meter lo del THRESHOLD en el airdrop.xxxxx
 
 		//REMOVE holders with balance <= THRESHOLD  (default: remove 0 balance holders)
-		process.stdout.write("Found " + holders.length + " wallets holding " + airdrop.token2_abbr + ". After removing wallets with balance <= " + balance_threshold );
-		var remove_holders_with_THRESHOLD_balance = true; //GUI_VAR checkbox: Remove holders with <= than THRESHOLD 'balance'
-		var balance_threshold = 0; //GUI_VAR textbox, validate: number [0,infinite)
+		// process.stdout.write("Found " + holders.length + " wallets holding " + airdrop.token2_abbr + ". After removing wallets with balance <= " + balance_threshold );
+		var remove_holders_with_THRESHOLD_balance = airdrop.remove_holders_with_THRESHOLD_balance || false; //GUI_VAR checkbox: Remove holders with <= than THRESHOLD 'balance'
+		var remove_holders_with_ADDRESS = airdrop.remove_holders_with_ADDRESS || false;
+		var balance_threshold = airdrop.min_thresh || 0; //GUI_VAR textbox, validate: number [0,infinite)
+		var blacklist = airdrop.blacklist || [];
+		console.log("Found " + holders.length + " wallets holding " + airdrop.token2_abbr + ".");
+		if(remove_holders_with_ADDRESS){
+			holders = holders.filter(holder => { return (!blacklist.includes(holder.address)) });
+			console.log("After removing blacklisted addresses, targets where reduced to " + holders.length + " wallets." );
+		}
+
 		if(remove_holders_with_THRESHOLD_balance){
 			holders = holders.filter(holder => { 
 				if(holder.balance > balance_threshold) { total_balance += holder.balance; }
 				return (holder.balance > balance_threshold); }); 
+			console.log("After removing wallets with balance <= " + balance_threshold + ", targets where reduced to " + holders.length + " wallets." );
 		}
-		console.log(" targets where reduced to " + holders.length + " wallets" );
 		var num_wallets = holders.length;
 		airdrop.token2_numHolders = holders.length;
+		airdrop['token2_precision'] = airdrop.token2_precision || airdrop.token_precision;
 
 		var arrTargets;
 		var testing_sum = 0;
@@ -75,7 +84,7 @@ async function getHolders(airdrop){
 				amount = Math.floor(amount);//discard the decimals
 				//console.log(airdrop.token_precision + " >>> " + holder.address + " reward: " + reward + " amount: " + amount);
 				testing_sum += amount;
-				return {address: holder.address, amount: amount}; 
+				return {address: holder.address, amount: amount, balance: holder.balance}; 
 			}); 
 			break;
 		case airdrop.CRITERIAS.HOLDERS_EQUAL:
@@ -87,7 +96,7 @@ async function getHolders(airdrop){
 			amount = Math.floor(amount);//discard the decimals
 			arrTargets = holders.map( holder => { //Adjust rewards
 				testing_sum += amount;
-				return {address: holder.address, amount: amount}; 
+				return {address: holder.address, amount: amount, balance: holder.balance}; 
 			});
 			break;
 			//case Add here new CRITERIAS: ...
